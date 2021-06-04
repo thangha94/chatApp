@@ -4,6 +4,7 @@ import Chat from './functions/Chat/Chat';
 import Home from './functions/Home/Home';
 import Login from './functions/Login/Login';
 import Room from './functions/Room/Room';
+import './styles/main.scss';
 const App = () => {
     return (
         <Router>
