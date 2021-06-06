@@ -12,6 +12,7 @@ const config = {
     hot: true,
     open: true,
     historyApiFallback: true,
+    port: 3000
     // stats: 'minimal',
     // inline: true,
   },

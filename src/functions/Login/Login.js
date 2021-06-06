@@ -17,33 +17,48 @@ const CLIENT_ID =
 import './login.scss';
 import register from '../../images/undraw_maker_launch_crhe.svg';
 import register2 from '../../images/undraw_press_play_bx2d.svg';
+import axios from 'axios';
 
 const Login = () => {
   const [mode, setMode] = useState('');
 
   const successLogin = (res) => {
-    localStorage.setItem('googleToken', res.tokenId);
-    localStorage.setItem('googleUserData', JSON.stringify(res));
+    // localStorage.setItem('googleToken', res.tokenId);
+    // localStorage.setItem('googleUserData', JSON.stringify(res));
+    axios
+      .post('http://localhost:8080/signup', {
+        first: 123,
+        second: 222,
+      })
+      .then((res) => {
+        console.log(res);
+      });
   };
   const failLogin = (res) => {
     console.log('Fail', res);
   };
 
   const checkLogin = async () => {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-      if (this.readyState == 4 && this.status == 200) {
-        console.log(this);
-        let parser = new DOMParser();
-        console.log(parser.parseFromString(this.responseXML, 'text/xml'));
-      }
-    };
-    xhttp.open(
-      'GET',
-      'http://localhost:8080?tokenId=' + localStorage.getItem('googleToken'),
-      true
-    );
-    xhttp.send();
+    // var xhttp = new XMLHttpRequest();
+    // xhttp.onreadystatechange = function () {
+    //   if (this.readyState == 4 && this.status == 200) {
+    //     console.log(this);
+    //     let parser = new DOMParser();
+    //     console.log(parser.parseFromString(this.responseXML, 'text/xml'));
+    //   }
+    // };
+    // xhttp.open(
+    //   'GET',
+    //   'http://localhost:8080?tokenId=' + localStorage.getItem('googleToken'),
+    //   true
+    // );
+    // xhttp.send();
+    // axios.post('http://localhost:8080/signup', {
+    //   first: 'value',
+    // });
+    axios.get('http://localhost:8080/signup?par1=123', {
+      withCredentials: true,
+    });
   };
   useEffect(() => {
     checkLogin();
@@ -53,29 +68,45 @@ const Login = () => {
     <div className={`container ${mode}`}>
       <div className="forms-container">
         <div className="signin-signup">
-          <form action="" className="sign-in-form">
+          <form
+            action="http://localhost:8080/signup"
+            method="POST"
+            className="sign-in-form"
+            encType="multipart/form-data"
+          >
             <h2 className="title">Sign in</h2>
             <div className="input-field">
               <span className="input-icon">
                 <FontAwesomeIcon icon={faUser} />
               </span>
-              <input type="text" placeholder="Username" name="" id="" />
+              <input
+                type="search"
+                placeholder="Username"
+                name="useName"
+                id=""
+              />
             </div>
             <div className="input-field">
               <span className="input-icon">
                 <FontAwesomeIcon icon={faLock} />
               </span>
-              <input type="password" placeholder="Password" name="" id="" />
+              <input
+                type="password"
+                placeholder="Password"
+                name="password"
+                id=""
+              />
             </div>
+            {/* <input type="file" name="avatar" id="" /> */}
             <input type="submit" value="Login" className="btn solid" />
             <p className="social-text">Or Sign in with social platforms</p>
             <div className="social-media">
               <GoogleLogin
                 clientId={CLIENT_ID}
-                buttonText={false}
+                buttonText={'Login with Google'}
                 onSuccess={successLogin}
                 onFailure={failLogin}
-                cookiePolicy={'single_host_origin'}
+                // cookiePolicy={'single_host_origin'}
                 className="google-icon"
               />
             </div>

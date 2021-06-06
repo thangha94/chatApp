@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 const Home = () => {
-    return (
-        <div>
-            Home Page
-        </div>
-    );
+  const history = useHistory();
+  useEffect(() => {
+    if (!localStorage.getItem('googleUserData')) {
+      history.push('/login');
+    }
+  }, []);
+  return <div>Home Page</div>;
 };
 
 export default Home;

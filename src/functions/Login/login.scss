@@ -81,13 +81,30 @@
             outline: none;
             border: none;
             line-height: 1;
-            font-weight: 600;
-            font-size: 1.1rem;
+            // font-weight: 600;
+            // font-size: 1rem;
             color: #333;
             &::placeholder {
               color: #aaa;
               font-weight: 500;
             }
+            // &:-internal-autofill-selected {
+            //   background-color: none !important;
+            // }
+          }
+          input:-webkit-autofill,
+          input:-webkit-autofill:hover,
+          input:-webkit-autofill:focus,
+          input:-webkit-autofill:active {
+            background-color: #f0f0f0;
+            border-radius: 49px;
+            -webkit-box-shadow: 0 0 0px 1000px #f0f0f0 inset;
+            // border: 1px solid green;
+            // -webkit-text-fill-color: green;
+            // -webkit-box-shadow: 0 0 0px 1000px #000 inset;
+            // transition: background-color 5000s ease-in-out 0s;
+            // font-weight: 600;
+            // font-size: 1.1rem;
           }
         }
         .social-text {
@@ -98,6 +115,13 @@
       .sign-in-form {
         z-index: 2;
         transition: 0.2s 0.7s ease-in-out;
+        .google-icon {
+          border-radius: 49px !important;
+          height: 49px !important;
+          box-shadow: none !important;
+          border: 2px solid #5995fd !important;
+          padding: 10px !important;
+        }
       }
       .sign-up-form {
         z-index: 1;
@@ -240,7 +264,7 @@
           padding-right: 15%;
           transition: 0.9s 0.8s ease-in-out;
           h3 {
-            font-size: 1.2rem;          
+            font-size: 1.2rem;
           }
           p {
             font-size: 0.7rem;
@@ -255,17 +279,18 @@
         .image {
           width: 200px;
           transition: 0.9s 0.6s ease-in-out;
-        }        
+        }
       }
     }
-    &.sign-up-mode{
+    &.sign-up-mode {
       &::before {
         transform: translate(-50%, 100%);
         bottom: 32%;
-        right: initial; 
+        right: initial;
       }
       .left-panel {
-        .image, .content {
+        .image,
+        .content {
           transform: translateY(-300px);
         }
       }
@@ -273,12 +298,11 @@
         top: 5%;
         transform: translate(-50%, 0);
       }
-      
     }
   }
 }
 @include media-sm {
-  form{
+  form {
     padding: 0 1.5rem;
   }
   .image {
@@ -287,12 +311,12 @@
   .panel .content {
     padding: 0.5rem 1rem;
   }
-  .container{
+  .container {
     &::before {
       bottom: 72%;
       left: 50%;
     }
-    &.sign-up-mode::before{
+    &.sign-up-mode::before {
       bottom: 28%;
       left: 50%;
     }
