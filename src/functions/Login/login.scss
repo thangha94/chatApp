@@ -1,4 +1,27 @@
 @import '../../styles/config';
+@mixin errorLogin {
+  font-size: 0.8rem;
+  text-align: center;
+  padding: 10px;
+  transform: scale(0.4);
+  position: relative;
+  max-width: 380px;
+  max-height: 0px;
+  transition: max-height 0.4s ease-in-out, transform 0.8s ease-in-out;
+  &::first-letter {
+    text-transform: uppercase;
+  }
+  &.error {
+    color: red;
+    transform: scale(1);
+    max-height: 75px;
+  }
+  &.success {
+    color: green;
+    transform: scale(1);
+    max-height: 75px;
+  }
+}
 .container {
   position: relative;
   width: 100%;
@@ -70,6 +93,7 @@
           display: grid;
           grid-template-columns: 15% 85%;
           padding: 0 0.4rem;
+          position: relative;
           .input-icon {
             text-align: center;
             line-height: 55px;
@@ -106,6 +130,14 @@
             // font-weight: 600;
             // font-size: 1.1rem;
           }
+          .clear-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #acacac;
+            cursor: pointer;
+          }
         }
         .social-text {
           padding: 0.7rem 0;
@@ -122,11 +154,51 @@
           border: 2px solid #5995fd !important;
           padding: 10px !important;
         }
+        .clear-icon {
+          transition: all 1s;
+        }
+        &.error {
+          .clear-icon {
+            color: red;
+          }
+        }
+        .sign-in-info {
+          @include errorLogin;
+        }
       }
       .sign-up-form {
         z-index: 1;
         opacity: 0;
         transition: 0.2s 0.7s ease-in-out;
+        &.error {
+          .clear-icon {
+            color: red;
+          }
+        }
+        .sign-up-info {
+          @include errorLogin;
+          // font-size: 0.8rem;
+          // text-align: center;
+          // padding: 10px;
+          // transform: scale(0.4);
+          // position: relative;
+          // max-width: 380px;
+          // max-height: 0px;
+          // transition: max-height 0.4s ease-in-out, transform 0.8s ease-in-out;
+          // &::first-letter {
+          //   text-transform: uppercase;
+          // }
+          // &.error {
+          //   color: red;
+          //   transform: scale(1);
+          //   max-height: 75px;
+          // }
+          // &.success {
+          //   color: green;
+          //   transform: scale(1);
+          //   max-height: 75px;
+          // }
+        }
       }
     }
   }

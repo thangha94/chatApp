@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+    <a href="#" onclick="changeLink(event)">link a</a>
+    <a href="#" onclick="changeLink(event)">link b</a>
+    <a href="#" onclick="changeLink(event)">link c</a>
+    <script>
+        // Monkey patching window.history
+        function monkeyPatching(his) {
+            var pushState = his.pushState;
+            // adjust and add call a callback inside the pushState
+            his.pushState = function (state) {
+                if (typeof his.onPushState == 'function') {
+                    his.onPushState({
+                        state
+                    })
+                }
+                return pushState.apply(his, arguments)
+            }
+            // pushState.apply(his, arguments)
+        }
+        monkeyPatching(window.history);
+        // (function (history) {
+        //     var pushState = history.pushState;
+        //     history.pushState = function (state) {
+        //         if (typeof history.onpushstate == "function") {
+        //             history.onpushstate({
+        //                 state: state
+        //             });
+        //         }
+        //         return pushState.apply(history, arguments);
+        //     }
+        // })(window.history);
+        // window.onpopstate = 
+        history.onPushState = function (e) {
+            console.log('History has been modified!')
+            console.log(e)
+        };
+        function changeLink(e) {
+            e.preventDefault();
+            console.log(e);
+            history.pushState({ page: 1 }, "title 1", "?page=1")
+        }
+
+    </script>
+</body>
+
+</html>

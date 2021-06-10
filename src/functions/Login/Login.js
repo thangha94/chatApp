@@ -1,68 +1,122 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faCoffee,
-  faCheckSquare,
-  lock,
   faUser,
   faLock,
   faEnvelope,
+  faTimesCircle,
 } from '@fortawesome/free-solid-svg-icons';
-import { fab, faFacebook, faGoogle } from '@fortawesome/free-brands-svg-icons';
+import axios from 'axios';
 import GoogleLogin from 'react-google-login';
-const CLIENT_ID =
-  '550467040202-papd023rtkrv64nkq62s6t4l9gshsr1t.apps.googleusercontent.com';
+import { useHistory } from 'react-router-dom';
 
 import './login.scss';
 import register from '../../images/undraw_maker_launch_crhe.svg';
 import register2 from '../../images/undraw_press_play_bx2d.svg';
-import axios from 'axios';
+import useLocalStorage from '../../customHook/useLocalStorage';
+import { signupServer, signinServer } from '../../apis/auth.api';
+import { GOOGLE_CLIENT_ID } from '../../define';
 
 const Login = () => {
   const [mode, setMode] = useState('');
+  const userNameRef = useRef(false);
+  const passwordRef = useRef(false);
+  const userNameSignUpRef = useRef(false);
+  const passwordSignUpRef = useRef(false);
+  const emailSignUpRef = useRef(false);
+  const loginFormRef = useRef(false);
+  const signupFormRef = useRef(false);
+  const signupErrorRef = useRef(false);
+  const signinErrorRef = useRef(false);
+  const [token, setToken] = useLocalStorage('cc-token', false);
 
-  const successLogin = (res) => {
-    // localStorage.setItem('googleToken', res.tokenId);
-    // localStorage.setItem('googleUserData', JSON.stringify(res));
-    axios
-      .post('http://localhost:8080/signup', {
-        first: 123,
-        second: 222,
-      })
-      .then((res) => {
-        console.log(res);
+  const history = useHistory();
+  const successGoogleLogin = async (res) => {
+    loginProcess({ googleToken: res.tokenId });
+  };
+  const failGoogleLogin = (res) => {
+    // console.log('Fail', res);
+  };
+
+  const loginProcess = async (data) => {
+    let result = await signinServer(data);
+    if (result.errorStatus) {
+      let errorDetails = result.data.details,
+        messages = [];
+      errorDetails.forEach((item) => {
+        messages.push(item.message);
       });
-  };
-  const failLogin = (res) => {
-    console.log('Fail', res);
+      signinErrorRef.current.classList.add('error');
+      signinErrorRef.current.classList.remove('success');
+      signinErrorRef.current.innerHTML = messages.join(', ');
+    } else {
+      localStorage.setItem('tokenId', result.data.tokenId);
+      signinErrorRef.current.classList.remove('error');
+      signinErrorRef.current.classList.add('success');
+      setTimeout(() => {
+        history.push({
+          pathname: '/',
+        });
+      }, -1);
+    }
   };
 
-  const checkLogin = async () => {
-    // var xhttp = new XMLHttpRequest();
-    // xhttp.onreadystatechange = function () {
-    //   if (this.readyState == 4 && this.status == 200) {
-    //     console.log(this);
-    //     let parser = new DOMParser();
-    //     console.log(parser.parseFromString(this.responseXML, 'text/xml'));
-    //   }
-    // };
-    // xhttp.open(
-    //   'GET',
-    //   'http://localhost:8080?tokenId=' + localStorage.getItem('googleToken'),
-    //   true
-    // );
-    // xhttp.send();
-    // axios.post('http://localhost:8080/signup', {
-    //   first: 'value',
-    // });
-    axios.get('http://localhost:8080/signup?par1=123', {
-      withCredentials: true,
-    });
+  const submitFormLogin = (e) => {
+    e.preventDefault();
+    let email = userNameRef.current.value.trim(),
+      password = passwordRef.current.value.trim();
+    loginProcess({ email, password });
   };
-  useEffect(() => {
-    checkLogin();
-  }, []);
+
+  const signup = async (e) => {
+    e.preventDefault();
+    let email = emailSignUpRef.current.value.trim(),
+      userName = userNameSignUpRef.current.value.trim(),
+      password = passwordSignUpRef.current.value.trim();
+    let result = await signupServer({ email, userName, password });
+    if (result.errorStatus) {
+      let errorDetails = result.data.details,
+        messages = [];
+      errorDetails.forEach((item) => {
+        messages.push(item.message);
+      });
+
+      signupErrorRef.current.classList.add('error');
+      signupErrorRef.current.classList.remove('success');
+      signupErrorRef.current.innerHTML = messages.join(', ');
+    } else {
+      signupErrorRef.current.innerHTML = result.data;
+      signupErrorRef.current.classList.remove('error');
+      signupErrorRef.current.classList.add('success');
+    }
+  };
+
+  const cleanInput = (input) => {
+    switch (input) {
+      case 'signin-userName':
+        userNameRef.current.value = '';
+        userNameRef.current.focus();
+        break;
+      case 'signin-password':
+        passwordRef.current.value = '';
+        passwordRef.current.focus();
+        break;
+      case 'signup-password':
+        passwordSignUpRef.current.value = '';
+        passwordSignUpRef.current.focus();
+        break;
+      case 'signup-email':
+        emailSignUpRef.current.value = '';
+        emailSignUpRef.current.focus();
+        break;
+      case 'signup-userName':
+        console.log(userNameSignUpRef.current.value, userNameSignUpRef);
+        userNameSignUpRef.current.value = '';
+        userNameSignUpRef.current.focus();
+        break;
+    }
+  };
 
   return (
     <div className={`container ${mode}`}>
@@ -73,6 +127,8 @@ const Login = () => {
             method="POST"
             className="sign-in-form"
             encType="multipart/form-data"
+            onSubmit={submitFormLogin}
+            ref={loginFormRef}
           >
             <h2 className="title">Sign in</h2>
             <div className="input-field">
@@ -80,11 +136,17 @@ const Login = () => {
                 <FontAwesomeIcon icon={faUser} />
               </span>
               <input
-                type="search"
+                type="text"
                 placeholder="Username"
                 name="useName"
-                id=""
+                ref={userNameRef}
               />
+              <span
+                className="clear-icon"
+                onClick={() => cleanInput('signin-userName')}
+              >
+                <FontAwesomeIcon icon={faTimesCircle} />
+              </span>
             </div>
             <div className="input-field">
               <span className="input-icon">
@@ -94,43 +156,88 @@ const Login = () => {
                 type="password"
                 placeholder="Password"
                 name="password"
-                id=""
+                ref={passwordRef}
               />
+              <span
+                className="clear-icon"
+                onClick={() => cleanInput('signin-password')}
+              >
+                <FontAwesomeIcon icon={faTimesCircle} />
+              </span>
             </div>
-            {/* <input type="file" name="avatar" id="" /> */}
+            <span className="sign-in-info" ref={signinErrorRef}></span>
             <input type="submit" value="Login" className="btn solid" />
             <p className="social-text">Or Sign in with social platforms</p>
             <div className="social-media">
               <GoogleLogin
-                clientId={CLIENT_ID}
+                clientId={GOOGLE_CLIENT_ID}
                 buttonText={'Login with Google'}
-                onSuccess={successLogin}
-                onFailure={failLogin}
+                onSuccess={successGoogleLogin}
+                onFailure={failGoogleLogin}
                 // cookiePolicy={'single_host_origin'}
                 className="google-icon"
               />
             </div>
           </form>
-          <form action="" className="sign-up-form">
+          <form
+            ref={signupFormRef}
+            onSubmit={signup}
+            action=""
+            className="sign-up-form"
+          >
             <h2 className="title">Sign up</h2>
             <div className="input-field">
               <span className="input-icon">
                 <FontAwesomeIcon icon={faUser} />
               </span>
-              <input type="text" placeholder="Username" name="" id="" />
+              <input
+                ref={userNameSignUpRef}
+                type="text"
+                placeholder="Username"
+                name="useName"
+              />
+              <span
+                className="clear-icon"
+                onClick={() => cleanInput('signup-userName')}
+              >
+                <FontAwesomeIcon icon={faTimesCircle} />
+              </span>
             </div>
             <div className="input-field">
               <span className="input-icon">
                 <FontAwesomeIcon icon={faEnvelope} />
               </span>
-              <input type="text" placeholder="Email" name="" id="" />
+              <input
+                ref={emailSignUpRef}
+                type="text"
+                placeholder="Email"
+                name="email"
+              />
+              <span
+                className="clear-icon"
+                onClick={() => cleanInput('signup-email')}
+              >
+                <FontAwesomeIcon icon={faTimesCircle} />
+              </span>
             </div>
             <div className="input-field">
               <span className="input-icon">
                 <FontAwesomeIcon icon={faLock} />
               </span>
-              <input type="password" placeholder="Password" name="" id="" />
+              <input
+                ref={passwordSignUpRef}
+                type="password"
+                placeholder="Password"
+                name="password"
+              />
+              <span
+                className="clear-icon"
+                onClick={() => cleanInput('signup-password')}
+              >
+                <FontAwesomeIcon icon={faTimesCircle} />
+              </span>
             </div>
+            <span className="sign-up-info" ref={signupErrorRef}></span>
             <input type="submit" value="Sign up" className="btn solid" />
           </form>
         </div>
