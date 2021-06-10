@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { checkToken } from '../../apis/auth.api';
+import About from './About/About';
+import Header from './Header/Header';
 
 import './home.scss';
 import Channels from './NavComponents/Channels/Channels';
@@ -22,7 +24,6 @@ const Home = () => {
           pathname: '/login',
         });
       }
-      console.log('Call server and check token', result);
     }
   };
   useEffect(() => {
@@ -36,8 +37,12 @@ const Home = () => {
         <Channels />
         <Direct />
       </nav>
-      <header className="header">Header</header>
-      <aside className="about">About</aside>
+      <header className="header">
+        <Header />
+      </header>
+      <aside className="about">
+        <About />
+      </aside>
       <footer className="content">Content</footer>
       <footer className="footer">This is the footer</footer>
     </div>
