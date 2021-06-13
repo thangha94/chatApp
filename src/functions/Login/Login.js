@@ -52,6 +52,7 @@ const Login = () => {
       signinErrorRef.current.innerHTML = messages.join(', ');
     } else {
       localStorage.setItem('tokenId', result.data.tokenId);
+      localStorage.setItem('userData', JSON.stringify(result.data.user));
       signinErrorRef.current.classList.remove('error');
       signinErrorRef.current.classList.add('success');
       setTimeout(() => {

@@ -6,4 +6,7 @@ export const GOOGLE_CLIENT_ID =
 export const API = axios.create({
   baseURL: SERVER_URL,
   withCredentials: true,
+  headers: {
+    Authorization: 'Bearer ' + localStorage.getItem('tokenId'), //the token is a variable which holds the token
+  },
 });
