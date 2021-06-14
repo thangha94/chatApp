@@ -18,6 +18,7 @@ const TopInfo = () => {
       if (
         menu &&
         !menu.contains(e.target) &&
+        dropdownRef &&
         dropdownRef.current.className.indexOf('active') != -1
       ) {
         dropdownRef.current.classList.remove('active');
@@ -32,9 +33,15 @@ const TopInfo = () => {
     });
   };
 
+  const goHome = () => {
+    history.push({
+      pathname: '/home/main',
+    });
+  };
+
   return (
     <div className="top-info-container">
-      <div className="app-info">
+      <div className="app-info" onClick={goHome}>
         <img src={logo} alt="" />
         <div className="app-name">
           <span style={{ '--i': 1 }}>C</span>
@@ -52,7 +59,8 @@ const TopInfo = () => {
         <img src={avatar} alt="" className="user-avatar" />
         <div className="dropdown-user">
           <span className="user-name" onClick={toggleDropdown}>
-            {JSON.parse(localStorage.getItem('userData')).userName}
+            {localStorage.getItem('userData') &&
+              JSON.parse(localStorage.getItem('userData')).userName}
             <FontAwesomeIcon icon={faCaretDown} />
           </span>
           <ul ref={dropdownRef} className="dropdown-content">

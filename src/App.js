@@ -14,10 +14,10 @@ const App = () => {
         <Route path="/login">
           <Login />
         </Route>
-        <Route exact path="/home">
+        <Route path="/home/:id">
           <Home />
         </Route>
-        <Redirect to="/home" />
+        <Redirect to="/home/main" />
       </Switch>
     </Router>
   );

@@ -59,7 +59,7 @@ const Login = () => {
         history.push({
           pathname: '/',
         });
-      }, -1);
+      }, 200);
     }
   };
 

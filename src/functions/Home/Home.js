@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import socketIOClient from 'socket.io-client';
 import { checkToken } from '../../apis/auth.api';
+import { getMessagesByRoom, getRoomByUsers } from '../../apis/other.api';
+import { useDispatch, useStore } from 'react-redux';
 import { SERVER_URL } from '../../define';
 import About from './About/About';
 import Content from './Content/Content';
@@ -13,13 +15,16 @@ import Channels from './NavComponents/Channels/Channels';
 import Direct from './NavComponents/Direct/Direct';
 import Recent from './NavComponents/Recent/Recent';
 import TopInfo from './NavComponents/TopInfo/TopInfo';
+import {
+  addMessageToList,
+  setMessageList,
+} from '../../redux/actions/messages.action';
+import { setUserList } from '../../redux/actions/users.action';
 const Home = () => {
   const history = useHistory();
-  const socket = localStorage.getItem('tokenId')
-    ? socketIOClient(SERVER_URL, {
-        query: 'tokenId=' + localStorage.getItem('tokenId'),
-      })
-    : null;
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const [socket, setSocket] = useState(false);
   const checkAuth = async () => {
     try {
       let tokenId = localStorage.getItem('tokenId');
@@ -42,23 +47,69 @@ const Home = () => {
     }
   };
   const handleSocketMessage = () => {
-    if (socket) {
-      socket.on('Server-send-data', (data) => {
-        console.log(data);
+    const initSocket = localStorage.getItem('tokenId')
+      ? socketIOClient(SERVER_URL, {
+          query: 'tokenId=' + localStorage.getItem('tokenId'),
+        })
+      : null;
+    setSocket(initSocket);
+    if (initSocket) {
+      initSocket.on('Server-send-data', (data) => {
+        dispatch(addMessageToList(data.data));
+      });
+      initSocket.on('Server-join-room', (data) => {
+        initSocket.emit('Client-first-join-room', data);
+      });
+      initSocket.on('Server-send-new-room-data', (data) => {
+        getMess({ room: data.data.roomId });
+      });
+      initSocket.on('Server-update-users', (data) => {
+        dispatch(setUserList(data));
       });
     }
   };
+
+  const initializeData = async () => {
+    // get room from users
+    // sync data
+    let roomData = await getRoomByUsers({
+      user1: id,
+      user2: JSON.parse(localStorage.getItem('userData'))._id,
+    });
+    if (!roomData.errorStatus) {
+      if (id !== 'main') {
+        getMess({ room: roomData.data._id });
+      }
+    } else {
+      dispatch(setMessageList([]));
+    }
+  };
+
+  const getMess = async (room) => {
+    let message = await getMessagesByRoom(room);
+    if (!message.errorStatus) {
+      dispatch(setMessageList(message.data));
+    }
+  };
+  useEffect(() => {
+    initializeData();
+  }, [id]);
   useEffect(() => {
     handleSocketMessage();
     checkAuth();
+    return () => {
+      socket.emit('disconnect-socket', 'Update URL');
+    };
   }, []);
   return (
     <div className="home-container">
       <nav className="nav-menu">
         <TopInfo />
-        <Recent />
-        <Channels />
-        <Direct />
+        <div className="nav-detail-content">
+          <Recent />
+          <Channels />
+          <Direct />
+        </div>
       </nav>
       <header className="header">
         <Header />
@@ -66,9 +117,9 @@ const Home = () => {
       <aside className="about">
         <About />
       </aside>
-      <footer className="content">
-        <Content />{' '}
-      </footer>
+      <section className="content">
+        <Content />
+      </section>
       <footer className="footer">
         <Footer socket={socket} />
       </footer>

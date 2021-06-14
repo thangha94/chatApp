@@ -3,16 +3,17 @@ const common = require('./webpack.common');
 
 const config = {
   mode: process.env.NODE_ENV,
-  devtool: "cheap-module-source-map",
+  devtool: 'cheap-module-source-map',
   devServer: {
-    // contentBase: '/',
+    // contentBase: './',
     host: 'localhost',
     compress: true,
-    // publicPath: '/',
+    // publicPath: './',
+    public: '/',
     hot: true,
     open: true,
     historyApiFallback: true,
-    port: 3000
+    port: 3000,
     // stats: 'minimal',
     // inline: true,
   },
@@ -21,24 +22,25 @@ const config = {
     filename: '[name].[contenthash].bundle.js',
     path: '/',
     chunkFilename: '[name].[contenthash].chunk.js',
+    publicPath: '/',
   },
-    optimization: {
-      splitChunks: {
-        maxInitialRequests: Infinity,
-        minSize: 0,
-        cacheGroups: {
-          commons: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-          },
+  optimization: {
+    splitChunks: {
+      maxInitialRequests: Infinity,
+      minSize: 0,
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
         },
       },
-      removeEmptyChunks: true,
-      runtimeChunk: {
-        name: (entrypoint) => `runtime~${entrypoint.name}`,
-      },
     },
+    removeEmptyChunks: true,
+    runtimeChunk: {
+      name: (entrypoint) => `runtime~${entrypoint.name}`,
+    },
+  },
 };
 
 module.exports = merge(common, config);
