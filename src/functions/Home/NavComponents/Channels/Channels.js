@@ -6,23 +6,75 @@ import {
   faPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { getAllRoomByUser } from '../../../../apis/other.api';
+import CreateChannel from './CreateChannel';
+import { useDispatch, useSelector } from 'react-redux';
+import { setRoomList } from '../../../../redux/actions/rooms.action';
 
-const Channels = () => {
+const Channels = ({ socket }) => {
+  const [createVisible, setCreateVisible] = useState(false);
+  // const [channels, setChannels] = useState([]);
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const channels = useSelector((state) => state.roomList);
+
+  const initialData = async () => {
+    const rooms = await getAllRoomByUser({
+      userId: JSON.parse(localStorage.getItem('userData'))._id,
+    });
+    // setChannels(rooms.data);
+    dispatch(setRoomList(rooms.data));
+  };
+
+  const changeChannel = (user) => {
+    history.push({
+      pathname: `/home/type/channel/t/${user._id}`,
+    });
+  };
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('Server-created-new-room', (data) => {
+        initialData();
+      });
+    }
+  }, [socket]);
+
+  useEffect(() => {
+    initialData();
+  }, []);
+
   return (
-    <div className="channels-container nav-sub-container">
-      <span className="title">
-        <FontAwesomeIcon icon={faSlidersH} /> Channels
-        <span className="adjust-title-icon">
-          <FontAwesomeIcon icon={faPlus} />
+    <>
+      <div className="channels-container nav-sub-container">
+        <span className="title">
+          <FontAwesomeIcon icon={faSlidersH} /> Channels
+          <span className="adjust-title-icon add-channel">
+            <FontAwesomeIcon
+              onClick={() => setCreateVisible(true)}
+              icon={faPlus}
+            />
+          </span>
         </span>
-      </span>
-      <ul>
-        <li># JavaScript</li>
-        <li># React</li>
-        <li>@ Thuy Hang</li>
-      </ul>
-    </div>
+        <ul>
+          {channels.map(
+            (item, index) =>
+              item.name && (
+                <li
+                  onClick={() => changeChannel(item)}
+                  className="channel-item"
+                  key={index}
+                >
+                  # {item.name}
+                </li>
+              )
+          )}
+        </ul>
+      </div>
+      {createVisible && <CreateChannel setCreateVisible={setCreateVisible} />}
+    </>
   );
 };
 

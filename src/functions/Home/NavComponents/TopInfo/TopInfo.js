@@ -35,7 +35,7 @@ const TopInfo = () => {
 
   const goHome = () => {
     history.push({
-      pathname: '/home/main',
+      pathname: '/home/type/channel/t/main',
     });
   };
 

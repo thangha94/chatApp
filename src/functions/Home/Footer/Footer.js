@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 const Footer = ({ socket }) => {
-  const { id } = useParams();
+  const { id, type } = useParams();
   const channel = useSelector((state) => state.popupChat);
   const userList = useSelector((state) => state.userList);
   const [group, setGroup] = useState(false);
@@ -27,12 +27,13 @@ const Footer = ({ socket }) => {
     if (e.charCode === 13) {
       socket.emit('Client-normal-message', {
         content: e.target.value,
-        type: 'direct',
-        users: [
-          { _id: group._id },
-          { _id: JSON.parse(localStorage.getItem('userData'))._id },
-        ],
-        user: JSON.parse(localStorage.getItem('userData')),
+        type: type,
+        id,
+        // users: [
+        //   { _id: id },
+        //   { _id: JSON.parse(localStorage.getItem('userData'))._id },
+        // ],
+        // user: JSON.parse(localStorage.getItem('userData')),
       });
       e.target.value = '';
     }

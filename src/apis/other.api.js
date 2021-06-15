@@ -14,3 +14,11 @@ export const getMessagesByRoom = async (data) => {
   );
   return result.data;
 };
+export const getAllRoomByUser = async (data) => {
+  let result = await API().get(`/room/getAllRoomByUser?${qs.stringify(data)}`);
+  return result.data;
+};
+export const createRoom = async (data) => {
+  let result = await API().post(`/room/createNewRoom`, data);
+  return result.data;
+};

@@ -53,6 +53,21 @@
             position: absolute;
             right: 10px;
           }
+          .add-channel {
+            cursor: pointer;
+          }
+        }
+        .channel-item {
+          display: block;
+          position: relative;
+          align-items: center;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          padding: 10px 25px 0 0;
+          cursor: pointer;
         }
         .person-status {
           display: block;

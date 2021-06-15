@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import socketIOClient from 'socket.io-client';
 import { checkToken } from '../../apis/auth.api';
 import { getMessagesByRoom, getRoomByUsers } from '../../apis/other.api';
@@ -22,8 +22,10 @@ import {
 import { setUserList } from '../../redux/actions/users.action';
 const Home = () => {
   const history = useHistory();
+  const { path } = useRouteMatch();
+
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const { id, type } = useParams();
   const [socket, setSocket] = useState(false);
   const checkAuth = async () => {
     try {
@@ -54,15 +56,18 @@ const Home = () => {
       : null;
     setSocket(initSocket);
     if (initSocket) {
+      // Receive new message from server
       initSocket.on('Server-send-data', (data) => {
         dispatch(addMessageToList(data.data));
       });
+      // Handle for the first time connect and chat between 2 users
       initSocket.on('Server-join-room', (data) => {
         initSocket.emit('Client-first-join-room', data);
       });
       initSocket.on('Server-send-new-room-data', (data) => {
         getMess({ room: data.data.roomId });
       });
+      // Update users status (online or not)
       initSocket.on('Server-update-users', (data) => {
         dispatch(setUserList(data));
       });
@@ -72,16 +77,23 @@ const Home = () => {
   const initializeData = async () => {
     // get room from users
     // sync data
-    let roomData = await getRoomByUsers({
-      user1: id,
-      user2: JSON.parse(localStorage.getItem('userData'))._id,
-    });
-    if (!roomData.errorStatus) {
-      if (id !== 'main') {
-        getMess({ room: roomData.data._id });
+    console.log('initializeData');
+    if (type == 'direct') {
+      let roomData = await getRoomByUsers({
+        user1: id,
+        user2: JSON.parse(localStorage.getItem('userData'))._id,
+      });
+      if (!roomData.errorStatus) {
+        if (id !== 'main') {
+          getMess({ room: roomData.data._id });
+        }
+      } else {
+        dispatch(setMessageList([]));
       }
     } else {
-      dispatch(setMessageList([]));
+      if (id !== 'main') {
+        getMess({ room: id });
+      }
     }
   };
 
@@ -94,20 +106,24 @@ const Home = () => {
   useEffect(() => {
     initializeData();
   }, [id]);
+
   useEffect(() => {
     handleSocketMessage();
     checkAuth();
-    return () => {
-      socket.emit('disconnect-socket', 'Update URL');
-    };
+    if (socket) {
+      return () => {
+        socket.emit('disconnect-socket', 'Update URL');
+      };
+    }
   }, []);
+
   return (
     <div className="home-container">
       <nav className="nav-menu">
         <TopInfo />
         <div className="nav-detail-content">
           <Recent />
-          <Channels />
+          <Channels socket={socket} />
           <Direct />
         </div>
       </nav>

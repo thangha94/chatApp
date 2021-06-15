@@ -30,7 +30,7 @@ const Direct = () => {
   const changeChannel = (user) => {
     // dispatch(changeObjectChat({ ...user, type: 'direct' }));
     history.push({
-      pathname: `/home/${user._id}`,
+      pathname: `/home/type/direct/t/${user._id}`,
     });
   };
   return (
