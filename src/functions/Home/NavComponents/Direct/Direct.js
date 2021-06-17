@@ -6,6 +6,7 @@ import { useHistory } from 'react-router';
 import { getAllUser } from '../../../../apis/other.api';
 import { changeObjectChat } from '../../../../redux/actions/popupChat.action';
 import { setUserList } from '../../../../redux/actions/users.action';
+import directAvatar from '../../../../images/undraw_female_avatar_w3jk.svg';
 
 const Direct = () => {
   // const [users, setUsers] = useState([]);
@@ -47,7 +48,8 @@ const Direct = () => {
                 key={index}
                 className={`person-status ${user.status ? 'active' : ''} `}
               >
-                @ {user.userName}
+                <img src={directAvatar} alt="Avatar" />
+                <span className="title-object">{user.userName}</span>
               </li>
             )
           );

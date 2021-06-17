@@ -12,6 +12,7 @@ import { getAllRoomByUser } from '../../../../apis/other.api';
 import CreateChannel from './CreateChannel';
 import { useDispatch, useSelector } from 'react-redux';
 import { setRoomList } from '../../../../redux/actions/rooms.action';
+import groupAvatar from '../../../../images/group-avatar.svg';
 
 const Channels = ({ socket }) => {
   const [createVisible, setCreateVisible] = useState(false);
@@ -24,13 +25,14 @@ const Channels = ({ socket }) => {
     const rooms = await getAllRoomByUser({
       userId: JSON.parse(localStorage.getItem('userData'))._id,
     });
-    // setChannels(rooms.data);
-    dispatch(setRoomList(rooms.data));
+    if (!rooms.errorStatus) {
+      dispatch(setRoomList(rooms.data));
+    }
   };
 
-  const changeChannel = (user) => {
+  const changeChannel = (channel) => {
     history.push({
-      pathname: `/home/type/channel/t/${user._id}`,
+      pathname: `/home/type/channel/t/${channel._id}`,
     });
   };
 
@@ -67,7 +69,8 @@ const Channels = ({ socket }) => {
                   className="channel-item"
                   key={index}
                 >
-                  # {item.name}
+                  <img src={groupAvatar} alt="Avatar" />
+                  <span className="title-object">{item.name}</span>
                 </li>
               )
           )}

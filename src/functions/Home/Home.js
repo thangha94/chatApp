@@ -72,12 +72,12 @@ const Home = () => {
         dispatch(setUserList(data));
       });
     }
+    return initSocket;
   };
 
   const initializeData = async () => {
     // get room from users
     // sync data
-    console.log('initializeData');
     if (type == 'direct') {
       let roomData = await getRoomByUsers({
         user1: id,
@@ -108,13 +108,14 @@ const Home = () => {
   }, [id]);
 
   useEffect(() => {
-    handleSocketMessage();
+    let initSocket = handleSocketMessage();
     checkAuth();
-    if (socket) {
-      return () => {
-        socket.emit('disconnect-socket', 'Update URL');
-      };
-    }
+
+    return () => {
+      if (initSocket) {
+        initSocket.emit('disconnect-socket', 'Update URL');
+      }
+    };
   }, []);
 
   return (
@@ -130,9 +131,9 @@ const Home = () => {
       <header className="header">
         <Header />
       </header>
-      <aside className="about">
+      {/* <aside className="about">
         <About />
-      </aside>
+      </aside> */}
       <section className="content">
         <Content />
       </section>

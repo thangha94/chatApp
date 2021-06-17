@@ -2,7 +2,10 @@ import {
   faFile,
   faFileArchive,
   faImage,
+  faMicrophone,
   faPaperclip,
+  faPaperPlane,
+  faPlane,
   faSmile,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -40,7 +43,7 @@ const Footer = ({ socket }) => {
   };
   return (
     <div className="footer-container">
-      <div className="footer-tools">
+      <div className="footer-tools left">
         <span className="footer-icon">
           <FontAwesomeIcon icon={faImage} />
         </span>
@@ -58,6 +61,14 @@ const Footer = ({ socket }) => {
         placeholder="Aa..."
         onKeyPress={sendMessage}
       />
+      <div className="footer-tools right">
+        <span className="footer-icon">
+          <FontAwesomeIcon icon={faMicrophone} />
+        </span>
+        <span className="footer-icon send">
+          <FontAwesomeIcon icon={faPaperPlane} />
+        </span>
+      </div>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import avatar from '../../../images/avatar.svg';
+import avatar from '../../../images/undraw_female_avatar_w3jk.svg';
 const Message = ({ data }) => {
   return (
     <div className={`message-container ${data.myMessage ? 'my-message' : ''}`}>

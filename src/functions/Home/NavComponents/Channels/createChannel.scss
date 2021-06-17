@@ -7,21 +7,32 @@
   width: 500px;
   transform: translate(-50%, -50%);
   z-index: 3;
-  padding: 15px;
+  padding: 0 15px 15px;
   border-radius: 4px;
   box-shadow: 5px 6px 13px 0px #000000, 15px 18px 15px 5px rgb(0 0 0 / 0%);
   color: black;
   .create__header {
     border-bottom: 1px solid grey;
-    padding-bottom: 5px;
+    padding: 10px;
+    font-size: 1.2rem;
   }
   .create__content {
     padding: 10px;
     .create__field {
       margin: 15px 0;
       display: grid;
-      grid-template-columns: 2fr 10fr;
+      grid-template-columns: 3fr 10fr;
       width: 100%;
+      align-items: center;
+      > div > div {
+        outline: none;
+        border-color: #cccccc;
+        box-shadow: none;
+      }
+      > div > div:hover {
+        border-color: #cccccc;
+        box-shadow: none;
+      }
       span {
         width: 20%;
       }

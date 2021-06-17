@@ -13,7 +13,7 @@ const TopInfo = () => {
   };
 
   useEffect(() => {
-    document.addEventListener('click', (e) => {
+    let dropdownCallback = (e) => {
       let menu = document.querySelector('.dropdown-user');
       if (
         menu &&
@@ -23,7 +23,11 @@ const TopInfo = () => {
       ) {
         dropdownRef.current.classList.remove('active');
       }
-    });
+    };
+    document.addEventListener('click', dropdownCallback);
+    return () => {
+      document.removeEventListener('click', dropdownCallback);
+    };
   }, []);
 
   const logout = () => {
@@ -61,7 +65,9 @@ const TopInfo = () => {
           <span className="user-name" onClick={toggleDropdown}>
             {localStorage.getItem('userData') &&
               JSON.parse(localStorage.getItem('userData')).userName}
-            <FontAwesomeIcon icon={faCaretDown} />
+            <span className="user-name__caret">
+              <FontAwesomeIcon icon={faCaretDown} />
+            </span>
           </span>
           <ul ref={dropdownRef} className="dropdown-content">
             <li

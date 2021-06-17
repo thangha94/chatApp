@@ -8,6 +8,7 @@ const CreateChannel = ({ setCreateVisible }) => {
   const [options, setOptions] = useState([]);
   const [selected, setSelected] = useState([]);
   const refName = useRef(false);
+  const refDesc = useRef(false);
   const refErr = useRef(false);
   useEffect(() => {
     if (userList) {
@@ -33,6 +34,7 @@ const CreateChannel = ({ setCreateVisible }) => {
       refErr.current.innerHTML = '';
       let newRoom = await createRoom({
         name: refName.current.value,
+        desc: refDesc.current.value,
         users: [selected[0].value, selected[1].value, selected[2].value],
       });
       console.log(newRoom);
@@ -56,6 +58,15 @@ const CreateChannel = ({ setCreateVisible }) => {
         <div className="create__field">
           <span>User: </span>
           <Select onChange={handleChange} isMulti options={options} />
+        </div>
+        <div className="create__field">
+          <span>Description: </span>
+          <input
+            className="channel__name"
+            type="text"
+            placeholder="Description ..."
+            ref={refDesc}
+          />
         </div>
         <div ref={refErr} className="channel__error-info"></div>
       </div>
