@@ -7,8 +7,8 @@
   .nav-menu {
     grid-row: span 3;
     border-right: 1px solid grey;
-    background: #49148a;
-    color: #bbbbbb;
+    background: $mainColor;
+    color: $textColor;
     position: relative;
     // padding: 10px;
     .nav-detail-content {
@@ -53,8 +53,8 @@
           position: relative;
           display: inline-block;
           width: 100%;
-          letter-spacing: 3px;
           font-size: 1.2rem;
+          color: #42cfb0;
           .adjust-title-icon {
             position: absolute;
             right: 10px;
@@ -163,9 +163,9 @@
             // transform: translateY(-10px);
             display: inline-block;
             font-weight: 700;
-            text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff,
-              0 0 42px #ffffff, 0 0 82px #ffffff, 0 0 92px #18bff3,
-              0 0 102px #18bff3, 0 0 151px #18bff3;
+            // text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff,
+            //   0 0 42px #ffffff, 0 0 82px #ffffff, 0 0 92px #18bff3,
+            //   0 0 102px #18bff3, 0 0 151px #18bff3;
           }
           @keyframes animate {
             0% {
@@ -212,27 +212,37 @@
             list-style: none;
             max-height: 0px;
             overflow: hidden;
-            transition: max-height 0.3s ease-in-out;
-            border-bottom-left-radius: 4px;
-            border-bottom-right-radius: 4px;
+            transition: all 0.3s ease-in-out;
             line-height: 1.9;
             position: absolute;
             top: 26px;
-            background: #af3be0;
-            color: white;
-            width: 120px;
+            background: white;
+            color: #6b6b6b;
+            width: 180px;
+            border-radius: 10px;
+            border-top-left-radius: 0px;
+            z-index: 3;
             li {
-              padding: 1px 10px;
+              padding: 5px 10px;
               cursor: pointer;
               transition: 1s;
               &:hover {
                 background: white;
                 color: #49148a;
+                font-weight: bold;
+              }
+              &:last-child {
+                border-top: 1px solid #cbc8c8;
               }
             }
             &.active {
-              max-height: 100px;
-              z-index: 2;
+              max-height: 900px;
+              border: 1px solid grey;
+              box-shadow: 7px 5px 9px 0px #8b8b8b;
+            }
+            .adjust-drd-icon {
+              font-size: 1.4rem;
+              margin-right: 10px;
             }
           }
         }
@@ -397,7 +407,11 @@
     overflow-y: auto;
     position: relative;
     .waiting-content {
-      height: calc(100% - 16px);
+      height: 80%;
+      transform: scaleX(-1);
+      right: 0px;
+      position: absolute;
+      bottom: 0;
     }
     .content-container {
       display: flex;
@@ -405,7 +419,7 @@
       .message-container {
         .message {
           text-align: left;
-          border-radius: 10px;
+          border-radius: 20px;
           padding: 8px 20px 8px 8px;
           background-color: #eaeaea;
           margin-bottom: 10px;
@@ -437,7 +451,7 @@
           text-align: right;
           .message {
             padding: 8px 8px 8px 20px;
-            background-color: rgb(0, 132, 255);
+            background-color: $secondColor;
             color: white;
             .message_content {
               position: relative;

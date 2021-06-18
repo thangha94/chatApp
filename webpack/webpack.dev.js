@@ -8,7 +8,7 @@ const config = {
     // contentBase: './',
     host: 'localhost',
     compress: true,
-    // publicPath: './',
+    static: './src/images',
     public: '/',
     hot: true,
     open: true,

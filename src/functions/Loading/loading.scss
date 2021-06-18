@@ -1,0 +1,110 @@
+@import '../../styles/config';
+.loader {
+  position: fixed;
+  width: 100px;
+  height: 100px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+  z-index: 999;
+  &::before {
+    position: absolute;
+    width: 100000px;
+    height: 100000px;
+    background: white;
+    top: -1000%;
+    left: -1000%;
+    content: '';
+    opacity: 0.9;
+  }
+  &::after {
+    position: absolute;
+    width: 65px;
+    height: 65px;
+    background: transparent;
+    top: 50%;
+    left: 50%;
+    content: 'ChitChat';
+    opacity: 1;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px white, 0 0 20px white, 0 0 40px white, 0 0 60px white;
+  }
+  .face {
+    position: absolute;
+    border: 2px solid $mainColor;
+    .circle {
+      position: absolute;
+      top: calc(50% - 1px);
+      left: 50%;
+      height: 2px;
+      width: 50%;
+      //   background: #fff;
+      transform-origin: left;
+      transform: rotate(-45deg);
+      &::before {
+        content: '';
+        top: -4px;
+        right: -6px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        position: absolute;
+        background: #fff;
+      }
+    }
+    &.face1 {
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: white;
+      box-shadow: 0 0 10px $thirdColor;
+      border-radius: 50%;
+      border-right: 0;
+      border-bottom: 0;
+      border-left: 2px solid $thirdColor;
+      border-top: 2px solid $thirdColor;
+      animation: animateLogin 3s linear infinite;
+      .circle::before {
+        background: $thirdColor;
+        box-shadow: 0 0 20px $thirdColor, 0 0 40px $thirdColor,
+          0 0 60px $thirdColor, 0 0 80px $thirdColor, 0 0 100px $thirdColor,
+          0 0 0 5px rgba(255, 255, 0, 0.1);
+      }
+    }
+    @keyframes animateLogin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    &.face2 {
+      top: 15px;
+      left: 15px;
+      right: 15px;
+      bottom: 15px;
+      background: #49148a;
+      border-top: 0;
+      border-radius: 50%;
+      border-left: 0;
+      border-right: 2px solid #18bff3;
+      border-bottom: 2px solid #18bff3;
+      animation: animateLogin 3s linear reverse infinite;
+      .circle::before {
+        background: $secondColor;
+        box-shadow: 0 0 20px $secondColor, 0 0 40px $secondColor,
+          0 0 60px $secondColor, 0 0 80px $secondColor, 0 0 100px $secondColor,
+          0 0 0 5px rgba(3, 169, 244, 0.1);
+      }
+    }
+  }
+}

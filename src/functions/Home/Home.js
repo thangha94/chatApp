@@ -20,9 +20,11 @@ import {
   setMessageList,
 } from '../../redux/actions/messages.action';
 import { setUserList } from '../../redux/actions/users.action';
+import Loading from '../Loading/Loading';
 const Home = () => {
   const history = useHistory();
   const { path } = useRouteMatch();
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
   const { id, type } = useParams();
@@ -31,23 +33,33 @@ const Home = () => {
     try {
       let tokenId = localStorage.getItem('tokenId');
       if (!tokenId) {
-        history.replace({
-          pathname: '/login',
-        });
-      } else {
-        let result = await checkToken({ tokenId });
-        if (result.errorStatus) {
+        setLoading(true);
+        setTimeout(() => {
           history.replace({
             pathname: '/login',
           });
+        }, 500);
+      } else {
+        let result = await checkToken({ tokenId });
+        if (result.errorStatus) {
+          setLoading(true);
+          setTimeout(() => {
+            history.replace({
+              pathname: '/login',
+            });
+          }, 500);
         }
       }
     } catch (error) {
-      history.replace({
-        pathname: '/login',
-      });
+      setLoading(true);
+      setTimeout(() => {
+        history.replace({
+          pathname: '/login',
+        });
+      }, 500);
     }
   };
+
   const handleSocketMessage = () => {
     const initSocket = localStorage.getItem('tokenId')
       ? socketIOClient(SERVER_URL, {
@@ -119,28 +131,31 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="home-container">
-      <nav className="nav-menu">
-        <TopInfo />
-        <div className="nav-detail-content">
-          <Recent />
-          <Channels socket={socket} />
-          <Direct />
-        </div>
-      </nav>
-      <header className="header">
-        <Header />
-      </header>
-      {/* <aside className="about">
+    <>
+      {loading && <Loading />}
+      <div className="home-container">
+        <nav className="nav-menu">
+          <TopInfo configLoading={(value) => setLoading(value)} />
+          <div className="nav-detail-content">
+            <Recent />
+            <Channels socket={socket} />
+            <Direct />
+          </div>
+        </nav>
+        <header className="header">
+          <Header />
+        </header>
+        {/* <aside className="about">
         <About />
       </aside> */}
-      <section className="content">
-        <Content />
-      </section>
-      <footer className="footer">
-        <Footer socket={socket} />
-      </footer>
-    </div>
+        <section className="content">
+          <Content />
+        </section>
+        <footer className="footer">
+          <Footer socket={socket} />
+        </footer>
+      </div>
+    </>
   );
 };
 

@@ -2,9 +2,18 @@ import React, { useEffect, useRef } from 'react';
 import { history, useHistory } from 'react-router-dom';
 import logo from '../../../../images/logo.svg';
 import avatar from '../../../../images/avatar.svg';
-import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCaretDown,
+  faCog,
+  faLongArrowAltUp,
+  faPersonBooth,
+  faQuestionCircle,
+  faSignOutAlt,
+  faUserCircle,
+  faUserEdit,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-const TopInfo = () => {
+const TopInfo = ({ configLoading }) => {
   const dropdownRef = useRef(false);
   const history = useHistory();
 
@@ -32,9 +41,12 @@ const TopInfo = () => {
 
   const logout = () => {
     localStorage.removeItem('tokenId');
-    history.push({
-      pathname: '/login',
-    });
+    configLoading(true);
+    setTimeout(() => {
+      history.replace({
+        pathname: '/login',
+      });
+    }, 500);
   };
 
   const goHome = () => {
@@ -70,15 +82,41 @@ const TopInfo = () => {
             </span>
           </span>
           <ul ref={dropdownRef} className="dropdown-content">
+            <li>
+              <span className="adjust-drd-icon">
+                <FontAwesomeIcon icon={faUserCircle} />
+              </span>
+              My Profile
+            </li>
+            <li>
+              <span className="adjust-drd-icon">
+                <FontAwesomeIcon icon={faUserEdit} />
+              </span>
+              Edit Profile
+            </li>
+            <li>
+              <span className="adjust-drd-icon">
+                <FontAwesomeIcon icon={faCog} />
+              </span>
+              Settings
+            </li>
+            <li>
+              <span className="adjust-drd-icon">
+                <FontAwesomeIcon icon={faQuestionCircle} />
+              </span>
+              Help
+            </li>
             <li
               onClick={() => {
                 toggleDropdown();
                 logout();
               }}
             >
+              <span className="adjust-drd-icon">
+                <FontAwesomeIcon icon={faSignOutAlt} />
+              </span>
               Logout!
             </li>
-            <li onClick={toggleDropdown}>Update info</li>
           </ul>
         </div>
       </div>

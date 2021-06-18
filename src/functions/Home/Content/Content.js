@@ -39,11 +39,7 @@ const Content = () => {
         </div>
       ) : (
         <>
-          <img
-            className="waiting-content main"
-            style={{ width: '100%' }}
-            src={waitingImg}
-          />
+          <img className="waiting-content main" src={waitingImg} />
         </>
       )}
     </>

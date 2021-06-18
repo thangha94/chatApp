@@ -56,7 +56,7 @@ const CreateChannel = ({ setCreateVisible }) => {
           />
         </div>
         <div className="create__field">
-          <span>User: </span>
+          <span>Users: </span>
           <Select onChange={handleChange} isMulti options={options} />
         </div>
         <div className="create__field">

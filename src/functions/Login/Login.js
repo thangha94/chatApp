@@ -17,9 +17,11 @@ import register2 from '../../images/undraw_press_play_bx2d.svg';
 import useLocalStorage from '../../customHook/useLocalStorage';
 import { signupServer, signinServer } from '../../apis/auth.api';
 import { GOOGLE_CLIENT_ID } from '../../define';
+import Loading from '../Loading/Loading';
 
 const Login = () => {
   const [mode, setMode] = useState('');
+  const [loading, setLoading] = useState(false);
   const userNameRef = useRef(false);
   const passwordRef = useRef(false);
   const userNameSignUpRef = useRef(false);
@@ -55,11 +57,12 @@ const Login = () => {
       localStorage.setItem('userData', JSON.stringify(result.data.user));
       signinErrorRef.current.classList.remove('error');
       signinErrorRef.current.classList.add('success');
+      setLoading(true);
       setTimeout(() => {
         history.push({
           pathname: '/',
         });
-      }, 200);
+      }, 500);
     }
   };
 
@@ -120,166 +123,169 @@ const Login = () => {
   };
 
   return (
-    <div className={`container ${mode}`}>
-      <div className="forms-container">
-        <div className="signin-signup">
-          <form
-            action="http://localhost:8080/signup"
-            method="POST"
-            className="sign-in-form"
-            encType="multipart/form-data"
-            onSubmit={submitFormLogin}
-            ref={loginFormRef}
-          >
-            <h2 className="title">Sign in</h2>
-            <div className="input-field">
-              <span className="input-icon">
-                <FontAwesomeIcon icon={faUser} />
-              </span>
-              <input
-                type="text"
-                placeholder="Username"
-                name="useName"
-                ref={userNameRef}
-              />
-              <span
-                className="clear-icon"
-                onClick={() => cleanInput('signin-userName')}
+    <>
+      {loading && <Loading />}
+      <div className={`container ${mode}`}>
+        <div className="forms-container">
+          <div className="signin-signup">
+            <form
+              action="http://localhost:8080/signup"
+              method="POST"
+              className="sign-in-form"
+              encType="multipart/form-data"
+              onSubmit={submitFormLogin}
+              ref={loginFormRef}
+            >
+              <h2 className="title">Sign in</h2>
+              <div className="input-field">
+                <span className="input-icon">
+                  <FontAwesomeIcon icon={faUser} />
+                </span>
+                <input
+                  type="text"
+                  placeholder="Username"
+                  name="useName"
+                  ref={userNameRef}
+                />
+                <span
+                  className="clear-icon"
+                  onClick={() => cleanInput('signin-userName')}
+                >
+                  <FontAwesomeIcon icon={faTimesCircle} />
+                </span>
+              </div>
+              <div className="input-field">
+                <span className="input-icon">
+                  <FontAwesomeIcon icon={faLock} />
+                </span>
+                <input
+                  type="password"
+                  placeholder="Password"
+                  name="password"
+                  ref={passwordRef}
+                />
+                <span
+                  className="clear-icon"
+                  onClick={() => cleanInput('signin-password')}
+                >
+                  <FontAwesomeIcon icon={faTimesCircle} />
+                </span>
+              </div>
+              <span className="sign-in-info" ref={signinErrorRef}></span>
+              <input type="submit" value="Login" className="btn solid" />
+              <p className="social-text">Or Sign in with social platforms</p>
+              <div className="social-media">
+                <GoogleLogin
+                  clientId={GOOGLE_CLIENT_ID}
+                  buttonText={'Login with Google'}
+                  onSuccess={successGoogleLogin}
+                  onFailure={failGoogleLogin}
+                  // cookiePolicy={'single_host_origin'}
+                  className="google-icon"
+                />
+              </div>
+            </form>
+            <form
+              ref={signupFormRef}
+              onSubmit={signup}
+              action=""
+              className="sign-up-form"
+            >
+              <h2 className="title">Sign up</h2>
+              <div className="input-field">
+                <span className="input-icon">
+                  <FontAwesomeIcon icon={faUser} />
+                </span>
+                <input
+                  ref={userNameSignUpRef}
+                  type="text"
+                  placeholder="Username"
+                  name="useName"
+                />
+                <span
+                  className="clear-icon"
+                  onClick={() => cleanInput('signup-userName')}
+                >
+                  <FontAwesomeIcon icon={faTimesCircle} />
+                </span>
+              </div>
+              <div className="input-field">
+                <span className="input-icon">
+                  <FontAwesomeIcon icon={faEnvelope} />
+                </span>
+                <input
+                  ref={emailSignUpRef}
+                  type="text"
+                  placeholder="Email"
+                  name="email"
+                />
+                <span
+                  className="clear-icon"
+                  onClick={() => cleanInput('signup-email')}
+                >
+                  <FontAwesomeIcon icon={faTimesCircle} />
+                </span>
+              </div>
+              <div className="input-field">
+                <span className="input-icon">
+                  <FontAwesomeIcon icon={faLock} />
+                </span>
+                <input
+                  ref={passwordSignUpRef}
+                  type="password"
+                  placeholder="Password"
+                  name="password"
+                />
+                <span
+                  className="clear-icon"
+                  onClick={() => cleanInput('signup-password')}
+                >
+                  <FontAwesomeIcon icon={faTimesCircle} />
+                </span>
+              </div>
+              <span className="sign-up-info" ref={signupErrorRef}></span>
+              <input type="submit" value="Sign up" className="btn solid" />
+            </form>
+          </div>
+        </div>
+        <div className="panels-container">
+          <div className="panel left-panel">
+            <div className="content">
+              <h3>Chit Chat ?</h3>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Accusantium repellendus dolor fugiat!
+              </p>
+              <button
+                onClick={() => setMode('sign-up-mode')}
+                className="btn transparent"
+                id="sign-up-btn"
               >
-                <FontAwesomeIcon icon={faTimesCircle} />
-              </span>
+                Sign up
+              </button>
             </div>
-            <div className="input-field">
-              <span className="input-icon">
-                <FontAwesomeIcon icon={faLock} />
-              </span>
-              <input
-                type="password"
-                placeholder="Password"
-                name="password"
-                ref={passwordRef}
-              />
-              <span
-                className="clear-icon"
-                onClick={() => cleanInput('signin-password')}
+            <img src={register2} alt="" className="image" />
+          </div>
+          <div className="panel right-panel">
+            <div className="content">
+              <h3>One of us ?</h3>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Accusantium repellendus dolor fugiat!
+              </p>
+              <button
+                onClick={() => setMode('sign-in-mode')}
+                className="btn transparent"
+                id="sign-up-btn"
               >
-                <FontAwesomeIcon icon={faTimesCircle} />
-              </span>
+                Sign in
+              </button>
             </div>
-            <span className="sign-in-info" ref={signinErrorRef}></span>
-            <input type="submit" value="Login" className="btn solid" />
-            <p className="social-text">Or Sign in with social platforms</p>
-            <div className="social-media">
-              <GoogleLogin
-                clientId={GOOGLE_CLIENT_ID}
-                buttonText={'Login with Google'}
-                onSuccess={successGoogleLogin}
-                onFailure={failGoogleLogin}
-                // cookiePolicy={'single_host_origin'}
-                className="google-icon"
-              />
-            </div>
-          </form>
-          <form
-            ref={signupFormRef}
-            onSubmit={signup}
-            action=""
-            className="sign-up-form"
-          >
-            <h2 className="title">Sign up</h2>
-            <div className="input-field">
-              <span className="input-icon">
-                <FontAwesomeIcon icon={faUser} />
-              </span>
-              <input
-                ref={userNameSignUpRef}
-                type="text"
-                placeholder="Username"
-                name="useName"
-              />
-              <span
-                className="clear-icon"
-                onClick={() => cleanInput('signup-userName')}
-              >
-                <FontAwesomeIcon icon={faTimesCircle} />
-              </span>
-            </div>
-            <div className="input-field">
-              <span className="input-icon">
-                <FontAwesomeIcon icon={faEnvelope} />
-              </span>
-              <input
-                ref={emailSignUpRef}
-                type="text"
-                placeholder="Email"
-                name="email"
-              />
-              <span
-                className="clear-icon"
-                onClick={() => cleanInput('signup-email')}
-              >
-                <FontAwesomeIcon icon={faTimesCircle} />
-              </span>
-            </div>
-            <div className="input-field">
-              <span className="input-icon">
-                <FontAwesomeIcon icon={faLock} />
-              </span>
-              <input
-                ref={passwordSignUpRef}
-                type="password"
-                placeholder="Password"
-                name="password"
-              />
-              <span
-                className="clear-icon"
-                onClick={() => cleanInput('signup-password')}
-              >
-                <FontAwesomeIcon icon={faTimesCircle} />
-              </span>
-            </div>
-            <span className="sign-up-info" ref={signupErrorRef}></span>
-            <input type="submit" value="Sign up" className="btn solid" />
-          </form>
+            <img src={register} alt="" className="image" />
+          </div>
         </div>
       </div>
-      <div className="panels-container">
-        <div className="panel left-panel">
-          <div className="content">
-            <h3>New here ?</h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Accusantium repellendus dolor fugiat!
-            </p>
-            <button
-              onClick={() => setMode('sign-up-mode')}
-              className="btn transparent"
-              id="sign-up-btn"
-            >
-              Sign up
-            </button>
-          </div>
-          <img src={register2} alt="" className="image" />
-        </div>
-        <div className="panel right-panel">
-          <div className="content">
-            <h3>One of us ?</h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Accusantium repellendus dolor fugiat!
-            </p>
-            <button
-              onClick={() => setMode('sign-in-mode')}
-              className="btn transparent"
-              id="sign-up-btn"
-            >
-              Sign in
-            </button>
-          </div>
-          <img src={register} alt="" className="image" />
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 
