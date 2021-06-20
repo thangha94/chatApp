@@ -3,7 +3,7 @@ import Select from 'react-select';
 import './createChannel.scss';
 import { useSelector } from 'react-redux';
 import { createRoom } from '../../../../apis/other.api';
-const CreateChannel = ({ setCreateVisible }) => {
+const CreateChannel = ({ setCreateVisible, visible }) => {
   const userList = useSelector((state) => state.userList);
   const [options, setOptions] = useState([]);
   const [selected, setSelected] = useState([]);
@@ -32,17 +32,18 @@ const CreateChannel = ({ setCreateVisible }) => {
       refErr.current.innerHTML = 'Please input the Name and choose users';
     } else {
       refErr.current.innerHTML = '';
+      let users = selected.map((item) => item.value);
       let newRoom = await createRoom({
         name: refName.current.value,
         desc: refDesc.current.value,
-        users: [selected[0].value, selected[1].value, selected[2].value],
+        users,
       });
-      console.log(newRoom);
+      setCreateVisible(false);
     }
   };
 
   return (
-    <div className="create-channel-container">
+    <div className={`create-channel-container ${visible ? 'active' : ''}`}>
       <div className="create__header">Create Channel</div>
       <div className="create__content">
         <div className="create__field">

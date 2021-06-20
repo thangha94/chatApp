@@ -76,7 +76,10 @@ const Channels = ({ socket }) => {
           )}
         </ul>
       </div>
-      {createVisible && <CreateChannel setCreateVisible={setCreateVisible} />}
+      <CreateChannel
+        setCreateVisible={setCreateVisible}
+        visible={createVisible}
+      />
     </>
   );
 };

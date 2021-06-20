@@ -1,16 +1,27 @@
+@import '../../../../styles/config';
 .create-channel-container {
   background-color: white;
   position: fixed;
   top: 50%;
-  left: 50%;
+  left: 0px;
   border: 2px solid white;
-  width: 500px;
+  width: 200px;
   transform: translate(-50%, -50%);
-  z-index: 3;
+  z-index: -1;
+  opacity: 0;
   padding: 0 15px 15px;
   border-radius: 4px;
   box-shadow: 5px 6px 13px 0px #000000, 15px 18px 15px 5px rgb(0 0 0 / 0%);
   color: black;
+  transition: 0.5s all;
+  &.active {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    z-index: 3;
+    opacity: 1;
+  }
   .create__header {
     border-bottom: 1px solid grey;
     padding: 10px;
@@ -52,13 +63,62 @@
   }
   .create__footer {
     display: flex;
+    width: 100%;
+    height: 50px;
     justify-content: center;
     align-items: center;
+    position: relative;
     button {
       margin: 10px;
       height: 35px;
       padding: 8px;
       cursor: pointer;
+      color: white;
+      background: $secondColor;
+      border-radius: 20px;
+      width: 100px;
+      border: none;
+      transition: 0.5s;
+      &:hover {
+        background: $thirdColor;
+      }
+    }
+  }
+}
+
+.cc-btn {
+  cursor: pointer;
+  width: 100px;
+  height: 40px;
+  padding: 10px 25px;
+  box-sizing: border-box;
+  // position: absolute;
+  overflow: hidden;
+  border-radius: 20px;
+  background: $secondColor;
+  .cc-btn__present-animation {
+    width: 0px;
+    height: 0px;
+    border-radius: 50%;
+    background: $mainColor;
+    transform: translate(-50%, -50%);
+    transition: width 1s, height 1s;
+    z-index: 1;
+    position: absolute;
+  }
+  .cc-btn__title {
+    z-index: 2;
+    position: absolute;
+    font-weight: normal;
+  }
+
+  &:hover {
+    .cc-btn__present-animation {
+      width: 300px;
+      height: 300px;
+    }
+    .cc-btn__title {
+      color: white;
     }
   }
 }
