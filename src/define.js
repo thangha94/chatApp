@@ -1,6 +1,5 @@
 import axios from 'axios';
 const protocol = window.location.protocol;
-console.log(protocol);
 export const SERVER_URL =
   window.location.hostname == 'localhost'
     ? protocol + '//localhost:8080'
