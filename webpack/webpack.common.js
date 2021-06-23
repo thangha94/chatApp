@@ -51,13 +51,13 @@ module.exports = {
           },
           {
             loader: 'postcss-loader',
-            options: {
-              postcssOptions: {
-                plugins: function () {
-                  return [require('autoprefixer')];
-                },
-              },
-            },
+            // options: {
+            //   postcssOptions: {
+            //     plugins: function () {
+            //       return [require('autoprefixer')];
+            //     },
+            //   },
+            // },
           },
           {
             loader: 'sass-loader',

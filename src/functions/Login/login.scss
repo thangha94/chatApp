@@ -26,7 +26,7 @@
   position: relative;
   width: 100%;
   min-height: 100vh;
-  background-color: #fff;
+  background: #fff;
   overflow: hidden;
   z-index: 1;
   .btn {
@@ -36,14 +36,14 @@
     outline: none;
     border-radius: 49px;
     cursor: pointer;
-    background-color: $secondColor;
+    background: $secondColor;
     color: #fff;
     text-transform: uppercase;
     font-weight: 600;
     margin: 10px 0;
     transition: 0.5s;
     &:hover {
-      background-color: $thirdColor;
+      background: $thirdColor;
     }
   }
   &::before {
@@ -89,7 +89,7 @@
           max-width: 380px;
           width: 100%;
           height: 55px;
-          background-color: #f0f0f0;
+          background: #f0f0f0;
           margin: 10px 0;
           border-radius: 55px;
           display: grid;
@@ -122,7 +122,7 @@
           input:-webkit-autofill:hover,
           input:-webkit-autofill:focus,
           input:-webkit-autofill:active {
-            background-color: #f0f0f0;
+            background: #f0f0f0;
             border-radius: 49px;
             -webkit-box-shadow: 0 0 0px 1000px #f0f0f0 inset;
             // border: 1px solid green;
