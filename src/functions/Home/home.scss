@@ -1,9 +1,12 @@
 @import '../../styles/config';
 .home-container {
   display: grid;
-  grid-template: 65px auto 65px / 220px auto;
+  //  grid-template: 65px auto 65px / 220px auto;
+  grid-template-rows: 65px auto 65px;
+  grid-template-columns: 220px auto;
   height: 100vh;
   background-color: #eaeaea;
+  transition: grid-template-columns 0.5s;
   .nav-menu {
     grid-row: span 3;
     border-right: 1px solid grey;
@@ -471,5 +474,97 @@
   }
   .contact__list {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .home-container {
+    grid-template-columns: 0px auto;
+    .nav-menu {
+      visibility: hidden;
+    }
+    .header {
+      .header-container {
+        justify-content: center;
+        font-weight: bold;
+        position: relative;
+        .hum-menu {
+          transition: all 1s;
+          display: inline-block;
+          width: 35px;
+        }
+        .hum-menu:before {
+          position: absolute;
+          left: 10px;
+          top: 13px;
+          font-family: 'Font Awesome 5 Free';
+          font-weight: 600;
+          font-size: 25px;
+          content: '\f0c9';
+          color: $mainColor;
+          cursor: pointer;
+          transition: all 1s;
+        }
+      }
+    }
+    &.active-nav {
+      grid-template-columns: 200px auto;
+      .nav-menu {
+        visibility: visible;
+      }
+      .header {
+        .header-container {
+          .hum-menu::before {
+            content: '\f00d';
+          }
+        }
+      }
+    }
+  }
+}
+@include media-sm {
+  .home-container {
+    .content {
+      .waiting-content {
+        width: 300px;
+      }
+    }
+    .footer {
+      .footer-container {
+        .footer-tools.left {
+          display: none;
+        }
+        .message-input {
+          width: calc(100% - 110px);
+        }
+      }
+    }
+    &.active-nav {
+      grid-template-columns: 0px auto;
+      .nav-menu {
+        visibility: visible;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+      .header {
+        .header-container {
+          .hum-menu::before {
+            content: '\f00d';
+            color: white;
+            z-index: 3;
+          }
+        }
+      }
+    }
+    .header {
+      .header-container {
+        .header-info {
+          width: 100%;
+        }
+        .header-search {
+          display: none;
+        }
+      }
+    }
   }
 }

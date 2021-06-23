@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import socketIOClient from 'socket.io-client';
 import { checkToken } from '../../apis/auth.api';
@@ -25,6 +25,7 @@ const Home = () => {
   const history = useHistory();
   const { path } = useRouteMatch();
   const [loading, setLoading] = useState(false);
+  const containerRef = useRef(false);
 
   const dispatch = useDispatch();
   const { id, type } = useParams();
@@ -117,6 +118,12 @@ const Home = () => {
   };
   useEffect(() => {
     initializeData();
+    if (
+      containerRef &&
+      containerRef.current.classList.value.includes('active-nav')
+    ) {
+      containerRef.current.classList.remove('active-nav');
+    }
   }, [id]);
 
   useEffect(() => {
@@ -133,7 +140,7 @@ const Home = () => {
   return (
     <>
       {loading && <Loading />}
-      <div className="home-container">
+      <div className="home-container" ref={containerRef}>
         <nav className="nav-menu">
           <TopInfo configLoading={(value) => setLoading(value)} />
           <div className="nav-detail-content">
@@ -143,11 +150,12 @@ const Home = () => {
           </div>
         </nav>
         <header className="header">
-          <Header />
+          <Header
+            toggleMenu={() =>
+              containerRef.current.classList.toggle('active-nav')
+            }
+          />
         </header>
-        {/* <aside className="about">
-        <About />
-      </aside> */}
         <section className="content">
           <Content />
         </section>

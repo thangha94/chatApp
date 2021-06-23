@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import avatarImg from '../../../images/undraw_female_avatar_w3jk.svg';
 import groupAvatarImg from '../../../images/group-avatar.svg';
 
-const Header = () => {
+const Header = ({ toggleMenu }) => {
   const userList = useSelector((state) => state.userList);
   const roomList = useSelector((state) => state.roomList);
   const [group, setGroup] = useState(false);
@@ -41,9 +41,10 @@ const Header = () => {
   }, []);
 
   return (
-    <>
+    <div className="header-container">
+      <span onClick={toggleMenu} className="hum-menu"></span>
       {id !== 'main' ? (
-        <div className="header-container">
+        <>
           <div className="header-info">
             {group && type == 'direct' ? (
               <div className="direct-info info-container">
@@ -90,11 +91,11 @@ const Header = () => {
               </span>
             </div>
           </div>
-        </div>
+        </>
       ) : (
-        <div className="header-container">Start chatting with your mate!</div>
+        <>Start chatting with your mate!</>
       )}
-    </>
+    </div>
   );
 };
 
