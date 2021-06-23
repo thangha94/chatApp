@@ -9,7 +9,7 @@ import {
   faSmile,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
@@ -18,6 +18,7 @@ const Footer = ({ socket }) => {
   const channel = useSelector((state) => state.popupChat);
   const userList = useSelector((state) => state.userList);
   const [group, setGroup] = useState(false);
+  const inputRef = useRef(false);
 
   useEffect(() => {
     if (id !== 'main' && userList) {
@@ -28,19 +29,26 @@ const Footer = ({ socket }) => {
 
   const sendMessage = (e) => {
     if (e.charCode === 13) {
-      socket.emit('Client-normal-message', {
-        content: e.target.value,
-        type: type,
-        id,
-        // users: [
-        //   { _id: id },
-        //   { _id: JSON.parse(localStorage.getItem('userData'))._id },
-        // ],
-        // user: JSON.parse(localStorage.getItem('userData')),
-      });
-      e.target.value = '';
+      // socket.emit('Client-normal-message', {
+      //   content: e.target.value,
+      //   type: type,
+      //   id
+      // });
+      // e.target.value = '';
+      send();
     }
   };
+
+  const send = () => {
+    socket.emit('Client-normal-message', {
+      content: inputRef.current.value,
+      type: type,
+      id,
+    });
+    inputRef.current.focus();
+    inputRef.current.value = '';
+  };
+
   return (
     <div className="footer-container">
       <div className="footer-tools left">
@@ -60,12 +68,13 @@ const Footer = ({ socket }) => {
         name="messageInput"
         placeholder="Aa..."
         onKeyPress={sendMessage}
+        ref={inputRef}
       />
       <div className="footer-tools right">
         <span className="footer-icon">
           <FontAwesomeIcon icon={faMicrophone} />
         </span>
-        <span className="footer-icon send">
+        <span onClick={send} className="footer-icon send">
           <FontAwesomeIcon icon={faPaperPlane} />
         </span>
       </div>
