@@ -8,7 +8,7 @@ import { changeObjectChat } from '../../../../redux/actions/popupChat.action';
 import { setUserList } from '../../../../redux/actions/users.action';
 import directAvatar from '../../../../images/undraw_female_avatar_w3jk.svg';
 
-const Direct = () => {
+const Direct = ({ toggleMenu }) => {
   // const [users, setUsers] = useState([]);
   const userList = useSelector((state) => state.userList);
   const history = useHistory();
@@ -33,6 +33,7 @@ const Direct = () => {
     history.push({
       pathname: `/home/type/direct/t/${user._id}`,
     });
+    toggleMenu();
   };
   return (
     <div className="direct-container nav-sub-container">

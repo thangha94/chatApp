@@ -38,9 +38,7 @@ const Content = () => {
           ))}
         </div>
       ) : (
-        <>
-          <img className="waiting-content main" src={waitingImg} />
-        </>
+        <img className="waiting-content main" src={waitingImg} />
       )}
     </>
   );

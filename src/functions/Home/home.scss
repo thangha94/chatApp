@@ -2,9 +2,9 @@
 .home-container {
   display: grid;
   //  grid-template: 65px auto 65px / 220px auto;
-  grid-template-rows: 65px auto 65px;
-  grid-template-columns: 220px auto;
-  height: 100vh;
+  grid-template-rows: 65px calc(100% - 130px) 65px;
+  grid-template-columns: 220px calc(100% - 220px);
+  height: -webkit-fill-available;
   background: #eaeaea;
   transition: grid-template-columns 0.5s;
   .nav-menu {
@@ -467,6 +467,9 @@
 }
 
 @include media-lg {
+  input {
+    font-size: 16px;
+  }
   .projects {
     &__items {
       grid-template-columns: repeat(3, 1fr);
@@ -477,9 +480,9 @@
   }
 
   .home-container {
-    grid-template-columns: 0px auto;
+    grid-template-columns: 100%;
     .nav-menu {
-      visibility: hidden;
+      display: none;
     }
     .header {
       .header-container {
@@ -506,9 +509,9 @@
       }
     }
     &.active-nav {
-      grid-template-columns: 200px auto;
+      grid-template-columns: 200px 100%;
       .nav-menu {
-        visibility: visible;
+        display: initial;
       }
       .header {
         .header-container {
@@ -537,10 +540,36 @@
         }
       }
     }
+    .nav-menu {
+      .top-info-container {
+        .user-info {
+          justify-content: center;
+        }
+      }
+      .nav-detail-content {
+        .nav-sub-container {
+          .channel-item,
+          .recent-item,
+          .person-status {
+            height: 40px;
+          }
+        }
+      }
+    }
+    .create-channel-container {
+      .active {
+        width: calc(100% - 20px);
+      }
+      .create__content {
+        .create__field {
+          grid-template-columns: 4fr 8fr;
+        }
+      }
+    }
     &.active-nav {
-      grid-template-columns: 0px auto;
+      grid-template-columns: 100%;
       .nav-menu {
-        visibility: visible;
+        display: initial;
         position: fixed;
         width: 100%;
         height: 100%;
@@ -548,13 +577,18 @@
       }
       .header {
         .header-container {
-          .hum-menu::before {
+          .hum-menu:before {
             content: '\f00d';
             color: white;
             z-index: 3;
           }
         }
       }
+      // .header,
+      // .content,
+      // .footer {
+      //   display: none;
+      // }
     }
     .header {
       .header-container {

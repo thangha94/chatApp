@@ -172,7 +172,9 @@ const Login = () => {
                 </span>
               </div>
               <span className="sign-in-info" ref={signinErrorRef}></span>
-              <input type="submit" value="Login" className="btn solid" />
+              <button type="submit" value="Login" className="btn solid">
+                Sign in
+              </button>
               <p className="social-text">Or Sign in with social platforms</p>
               <div className="social-media">
                 <GoogleLogin

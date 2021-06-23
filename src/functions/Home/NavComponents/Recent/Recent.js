@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom';
 import directAvatar from '../../../../images/undraw_female_avatar_w3jk.svg';
 import groupAvatar from '../../../../images/group-avatar.svg';
 
-const Recent = () => {
+const Recent = ({ toggleMenu }) => {
   const recentList = useSelector((state) => state.recentList);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -26,7 +26,6 @@ const Recent = () => {
   }, []);
 
   const openChannel = (item) => {
-    console.log(item);
     if (item.name === '') {
       if (
         item.userData[0]._id != JSON.parse(localStorage.getItem('userData'))._id
@@ -44,6 +43,7 @@ const Recent = () => {
         pathname: `/home/type/channel/t/${item._id}`,
       });
     }
+    toggleMenu();
   };
 
   return (

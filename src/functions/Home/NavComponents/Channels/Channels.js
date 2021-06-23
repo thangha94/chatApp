@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setRoomList } from '../../../../redux/actions/rooms.action';
 import groupAvatar from '../../../../images/group-avatar.svg';
 
-const Channels = ({ socket }) => {
+const Channels = ({ socket, toggleMenu }) => {
   const [createVisible, setCreateVisible] = useState(false);
   // const [channels, setChannels] = useState([]);
   const history = useHistory();
@@ -34,6 +34,7 @@ const Channels = ({ socket }) => {
     history.push({
       pathname: `/home/type/channel/t/${channel._id}`,
     });
+    toggleMenu();
   };
 
   useEffect(() => {

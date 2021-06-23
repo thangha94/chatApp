@@ -144,9 +144,22 @@ const Home = () => {
         <nav className="nav-menu">
           <TopInfo configLoading={(value) => setLoading(value)} />
           <div className="nav-detail-content">
-            <Recent />
-            <Channels socket={socket} />
-            <Direct />
+            <Recent
+              toggleMenu={() =>
+                containerRef.current.classList.toggle('active-nav')
+              }
+            />
+            <Channels
+              toggleMenu={() =>
+                containerRef.current.classList.toggle('active-nav')
+              }
+              socket={socket}
+            />
+            <Direct
+              toggleMenu={() =>
+                containerRef.current.classList.toggle('active-nav')
+              }
+            />
           </div>
         </nav>
         <header className="header">
