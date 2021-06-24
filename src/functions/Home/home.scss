@@ -531,6 +531,12 @@
   }
 }
 @include media-sm {
+  * {
+    font-size: 1.2rem;
+  }
+  input {
+    font-size: 18px;
+  }
   .home-container {
     .content {
       .waiting-content {
@@ -544,6 +550,7 @@
         }
         .message-input {
           width: calc(100% - 110px);
+          height: 45px;
         }
       }
     }
@@ -561,15 +568,25 @@
             right: 10px;
             color: white;
           }
+          .user-avatar {
+            width: 45px;
+          }
+          .dropdown-user {
+            .user-name {
+              font-size: 1.2rem;
+            }
+          }
         }
         .nav-search-container {
           width: calc(100% - 15px);
           position: relative;
           display: block;
+          margin-top: 15px;
+          margin-bottom: 15px;
           .search-input {
             width: 100%;
             border-radius: 4px;
-            height: 35px;
+            height: 48px;
             padding: 10px;
             border-radius: 30px;
             outline: none;
@@ -593,7 +610,7 @@
             top: 50%;
             right: 10px;
             transform: translateY(-50%);
-            font-size: 16px;
+            font-size: 1.5rem;
           }
         }
       }
@@ -602,8 +619,18 @@
           .channel-item,
           .recent-item,
           .person-status {
-            height: 40px;
+            height: 50px;
+            img {
+              width: 40px;
+              height: 40px;
+            }
+            .title-object {
+              font-size: 1.2rem;
+            }
             // padding-left: 15px;
+          }
+          .title {
+            font-size: 1.3rem;
           }
         }
       }
