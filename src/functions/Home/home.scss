@@ -532,10 +532,10 @@
 }
 @include media-sm {
   * {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
   input {
-    font-size: 18px;
+    font-size: 16px;
   }
   .home-container {
     .content {
@@ -573,7 +573,7 @@
           }
           .dropdown-user {
             .user-name {
-              font-size: 1.2rem;
+              font-size: 1.1rem;
             }
           }
         }
@@ -598,7 +598,7 @@
               top: 13px;
               font-family: 'Font Awesome 5 Free';
               font-weight: 600;
-              font-size: 25px;
+              font-size: 16px;
               content: '\f0c9';
               color: #49148a;
               cursor: pointer;
@@ -625,12 +625,12 @@
               height: 40px;
             }
             .title-object {
-              font-size: 1.2rem;
+              font-size: 1.1rem;
             }
             // padding-left: 15px;
           }
           .title {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
           }
         }
       }
