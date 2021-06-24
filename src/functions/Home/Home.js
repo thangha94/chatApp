@@ -118,11 +118,8 @@ const Home = () => {
   };
   useEffect(() => {
     initializeData();
-    if (
-      containerRef &&
-      containerRef.current.classList.value.includes('active-nav')
-    ) {
-      containerRef.current.classList.remove('active-nav');
+    if (id === 'main') {
+      containerRef.current.classList.add('active-nav');
     }
   }, [id]);
 

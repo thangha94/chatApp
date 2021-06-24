@@ -40,13 +40,16 @@ const Footer = ({ socket }) => {
   };
 
   const send = () => {
-    socket.emit('Client-normal-message', {
-      content: inputRef.current.value,
-      type: type,
-      id,
-    });
-    inputRef.current.focus();
-    inputRef.current.value = '';
+    console.log(inputRef, inputRef.current.value);
+    if (id != 'main') {
+      socket.emit('Client-normal-message', {
+        content: inputRef.current.value,
+        type: type,
+        id,
+      });
+      inputRef.current.focus();
+      inputRef.current.value = '';
+    }
   };
 
   return (

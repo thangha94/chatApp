@@ -57,7 +57,7 @@
           display: inline-block;
           width: 100%;
           font-size: 1.2rem;
-          color: #42cfb0;
+          // color: #42cfb0;
           .adjust-title-icon {
             position: absolute;
             right: 10px;
@@ -194,6 +194,10 @@
         padding: 20px 10px 10px;
         width: 100%;
         // justify-content: center;
+
+        .adjust-camera {
+          display: none;
+        }
         .user-avatar {
           width: 30px;
           border-radius: 50%;
@@ -248,6 +252,9 @@
             }
           }
         }
+      }
+      .nav-search-container {
+        display: none;
       }
     }
   }
@@ -542,8 +549,52 @@
     }
     .nav-menu {
       .top-info-container {
+        .app-info {
+          display: none;
+        }
         .user-info {
-          justify-content: center;
+          justify-content: flex-start;
+          .adjust-camera {
+            display: inline;
+            font-size: 25px;
+            position: absolute;
+            right: 10px;
+            color: white;
+          }
+        }
+        .nav-search-container {
+          width: calc(100% - 15px);
+          position: relative;
+          display: block;
+          .search-input {
+            width: 100%;
+            border-radius: 4px;
+            height: 35px;
+            padding: 10px;
+            border-radius: 30px;
+            outline: none;
+            border: 1px solid #49148a;
+            box-sizing: border-box;
+            &:after {
+              position: absolute;
+              left: 10px;
+              top: 13px;
+              font-family: 'Font Awesome 5 Free';
+              font-weight: 600;
+              font-size: 25px;
+              content: '\f0c9';
+              color: #49148a;
+              cursor: pointer;
+              transition: all 1s;
+            }
+          }
+          .adjust-search-icon {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            font-size: 16px;
+          }
         }
       }
       .nav-detail-content {
@@ -552,12 +603,13 @@
           .recent-item,
           .person-status {
             height: 40px;
+            // padding-left: 15px;
           }
         }
       }
     }
     .create-channel-container {
-      .active {
+      &.active {
         width: calc(100% - 20px);
       }
       .create__content {
@@ -578,9 +630,9 @@
       .header {
         .header-container {
           .hum-menu:before {
-            content: '\f00d';
-            color: white;
-            z-index: 3;
+            // content: '\f00d';
+            // color: white;
+            // z-index: 3;
           }
         }
       }

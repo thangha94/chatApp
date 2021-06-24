@@ -3,11 +3,13 @@ import { history, useHistory } from 'react-router-dom';
 import logo from '../../../../images/logo.svg';
 import avatar from '../../../../images/avatar.svg';
 import {
+  faCamera,
   faCaretDown,
   faCog,
   faLongArrowAltUp,
   faPersonBooth,
   faQuestionCircle,
+  faSearch,
   faSignOutAlt,
   faUserCircle,
   faUserEdit,
@@ -119,6 +121,20 @@ const TopInfo = ({ configLoading }) => {
             </li>
           </ul>
         </div>
+        <span className="adjust-camera">
+          <FontAwesomeIcon icon={faCamera} />
+        </span>
+      </div>
+      <div className="nav-search-container">
+        <input
+          // ref={searchInputRef}
+          className="search-input"
+          type="text"
+          placeholder="Search"
+        />
+        <span className="adjust-search-icon">
+          <FontAwesomeIcon icon={faSearch} />
+        </span>
       </div>
     </div>
   );
